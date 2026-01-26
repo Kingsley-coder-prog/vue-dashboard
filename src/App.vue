@@ -18,6 +18,7 @@
           <RecentOrders class="lg:col-span-2" />
           <RecentActivity />
         </div>
+        <StackedBarChart class="mt-6" />
       </main>
     </div>
 
@@ -34,6 +35,7 @@ import StatsCards from "./components/StatsCards.vue";
 import Charts from "./components/Charts.vue";
 import RecentOrders from "./components/RecentOrders.vue";
 import RecentActivity from "./components/RecentActivity.vue";
+import StackedBarChart from "./components/StackedBarChart.vue";
 const isDark = ref(true);
 
 onMounted(() => {
