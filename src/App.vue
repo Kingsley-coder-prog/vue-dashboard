@@ -1,6 +1,6 @@
 <template>
   <div class="drawer lg:drawer-open font-display">
-    <input type="checkbox" id="my-dream" class="drawer-toggle" />
+    <input type="checkbox" id="my-drawer" class="drawer-toggle" />
     <!-- Page Content -->
     <div class="drawer-content flex flex-col">
       <Navbar
@@ -9,23 +9,27 @@
         @toggle-theme="toggleTheme"
       />
     </div>
+
+    <!-- Sidebar -->
+    <Sidebar />
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref, watchEffect } from "vue";
 import Navbar from "./components/Navbar.vue";
+import Sidebar from "./components/Sidebar.vue";
 const isDark = ref(true);
 
 onMounted(() => {
   const savedTheme = localStorage.getItem("theme");
-  const systemePrefersDark = window.matchMedia(
+  const systemPrefersDark = window.matchMedia(
     "(prefers-color-scheme: dark)"
   ).matches;
 
   if (savedTheme) {
     isDark.value = savedTheme === "dark";
-  } else if (systemePrefersDark) {
+  } else if (systemPrefersDark) {
     isDark.value = true;
   }
 });
@@ -46,7 +50,7 @@ const toggleTheme = () => {
 };
 
 const toggleDrawer = () => {
-  const drawer = document.getElementById("mydrawer");
+  const drawer = document.getElementById("my-drawer");
   if (drawer) {
     drawer.checked = !drawer.checked;
   }

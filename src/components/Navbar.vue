@@ -3,7 +3,7 @@
     class="navbar bg-white dark:bg-backgroundDark dark:border-b dark:border-primary/10 sticky top-0 z-10 shadow-sm"
   >
     <nav class="flex-none lg:hidden">
-      <label @click="$emit(`toggle-drawer`)" class="btn btn-square btn-ghost">
+      <label @click="$emit('toggle-drawer')" class="btn btn-square btn-ghost">
         <Icon
           icon="line-md:close-to-menu-alt-transition"
           class="inline-block w-5 h-5"
@@ -25,7 +25,7 @@
       <!-- Theme Toggle Button -->
       <button
         @click="$emit('toggle-theme')"
-        class="btn btn-ghost btn-circle dark:bg-white/5 dark:background-blur-md dark:[--webkit-backdrop-filter:blur(10px)] dark:border-white/10"
+        class="btn btn-ghost btn-circle dark:bg-white/5 dark:backdrop-blur-md dark:[--webkit-backdrop-filter:blur(10px)] dark:border-white/10"
       >
         <Icon
           v-if="isDark"
@@ -34,7 +34,7 @@
         />
         <Icon
           v-else
-          icon="line-md:sunny-outline-to-moon-slt-loop-transition"
+          icon="line-md:sunny-outline-to-moon-alt-loop-transition"
           class="w-8 h-8"
         />
       </button>
@@ -46,7 +46,7 @@
           class="btn btn-ghost btn-circle avatar"
         >
           <div class="w-10 rounded-full">
-            <img src="/public/person.jpg" alt="Person" />
+            <img src="/src/person.jpg" alt="Person" />
           </div>
         </button>
         <ul
