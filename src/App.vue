@@ -1,12 +1,54 @@
 <template>
-  <div>
-    <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <div class="drawer lg:drawer-open font-display">
+    <input type="checkbox" id="my-dream" class="drawer-toggle" />
+    <!-- Page Content -->
+    <div class="drawer-content flex flex-col">
+      <Navbar
+        :isDark="isDark"
+        @toggle-drawer="toggleDrawer"
+        @toggle-theme="toggleTheme"
+      />
+    </div>
   </div>
 </template>
 
-<script>
-export default {};
-</script>
+<script setup>
+import { onMounted, ref, watchEffect } from "vue";
+import Navbar from "./components/Navbar.vue";
+const isDark = ref(true);
 
-<style>
-</style>
+onMounted(() => {
+  const savedTheme = localStorage.getItem("theme");
+  const systemePrefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  if (savedTheme) {
+    isDark.value = savedTheme === "dark";
+  } else if (systemePrefersDark) {
+    isDark.value = true;
+  }
+});
+
+watchEffect(() => {
+  const html = document.documentElement;
+  if (isDark.value) {
+    html.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    html.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+  }
+});
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value;
+};
+
+const toggleDrawer = () => {
+  const drawer = document.getElementById("mydrawer");
+  if (drawer) {
+    drawer.checked = !drawer.checked;
+  }
+};
+</script>
