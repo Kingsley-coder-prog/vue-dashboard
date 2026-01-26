@@ -8,6 +8,11 @@
         @toggle-drawer="toggleDrawer"
         @toggle-theme="toggleTheme"
       />
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6 bg-base-200 dark:bg-backgroundDark">
+        <StatsCards />
+      </main>
     </div>
 
     <!-- Sidebar -->
@@ -19,6 +24,7 @@
 import { onMounted, ref, watchEffect } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Sidebar from "./components/Sidebar.vue";
+import StatsCards from "./components/StatsCards.vue";
 const isDark = ref(true);
 
 onMounted(() => {
