@@ -46,7 +46,7 @@ const recentOrders = ref([
     customer: "John Doe",
     date: "2026-01-26",
     status: "Completed",
-    amount: "$250.00",
+    amount: "$250.00", // amount field added
   },
   {
     id: "#54321",
