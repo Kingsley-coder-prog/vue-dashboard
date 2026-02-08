@@ -33,7 +33,7 @@ ChartJS.register(
 );
 
 const stackedBarData = ref({
-  labels: ["Q1", "Q2", "Q3", "Q4"],
+  labels: ["Q1", "Q2", "Q3", "Q4"], // Updated labels to quarters
   datasets: [
     {
       label: "North",
