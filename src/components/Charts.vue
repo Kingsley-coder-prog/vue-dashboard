@@ -56,6 +56,8 @@ ChartJS.register(
 const lineChartKey = ref(0);
 const doughnutChartKey = ref(0);
 
+const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
+
 const revenueChartData = ref({
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
   datasets: [
@@ -153,6 +155,22 @@ onMounted(() => {
   // Trigger re-render to start animation
   lineChartKey.value++;
   doughnutChartKey.value++;
+
+  (async () => {
+    try {
+      const res = await fetch(`${API}/api/charts`);
+      if (!res.ok) return;
+      const rows = await res.json();
+      if (!Array.isArray(rows) || rows.length === 0) return;
+      revenueChartData.value.labels = rows.map((r) => r.label);
+      revenueChartData.value.datasets[0].data = rows.map((r) =>
+        Number(r.value)
+      );
+      lineChartKey.value++;
+    } catch (err) {
+      console.error("Failed to load chart data", err);
+    }
+  })();
 });
 </script>
 

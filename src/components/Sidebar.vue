@@ -105,6 +105,8 @@ const links = ref([
   },
 ]);
 
+const emit = defineEmits(["select"]);
+
 const setActive = (index) => {
   // Toggle open state for items with children
   if (links.value[index].children) {
@@ -115,6 +117,9 @@ const setActive = (index) => {
   links.value.forEach((link, i) => {
     link.active = i === index;
   });
+
+  // Notify parent which view was selected
+  emit("select", links.value[index].name);
 };
 </script>
 

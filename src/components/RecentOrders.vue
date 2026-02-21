@@ -38,52 +38,38 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
-const recentOrders = ref([
-  {
-    id: "#12345",
-    customer: "John Doe",
-    date: "2026-01-26",
-    status: "Completed",
-    amount: "$250.00", // amount field added
-  },
-  {
-    id: "#54321",
-    customer: "Kyle XY",
-    date: "2026-01-20",
-    status: "Completed",
-    amount: "$150.00",
-  },
-  {
-    id: "#42135",
-    customer: "Fermin Cole",
-    date: "2026-01-15",
-    status: "Completed",
-    amount: "$300.00",
-  },
-  {
-    id: "#34215",
-    customer: "Alice Smith",
-    date: "2026-01-10",
-    status: "Completed",
-    amount: "$175.00",
-  },
-  {
-    id: "#23154",
-    customer: "Bob Johnson",
-    date: "2026-01-05",
-    status: "Completed",
-    amount: "$400.00",
-  },
-]);
+const recentOrders = ref([]);
 
 function getStatusClass(status) {
   const statusMap = {
+    Delivered: "success",
     Completed: "success",
     Pending: "warning",
     Cancelled: "error",
+    Shipped: "info",
   };
   return statusMap[status] || "neutral";
 }
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`${API}/api/recent-orders`);
+    if (!res.ok) return;
+    const rows = await res.json();
+    recentOrders.value = rows.map((r) => ({
+      id: `#${r.id}`,
+      customer: r.customer_name || r.customer || "-",
+      date: r.created_at
+        ? new Date(r.created_at).toISOString().slice(0, 10)
+        : "-",
+      amount: r.price ? `$${Number(r.price).toFixed(2)}` : "-",
+      status: r.status || "-",
+    }));
+  } catch (err) {
+    console.error("Failed to load recent orders", err);
+  }
+});
 </script>

@@ -11,24 +11,17 @@
 
       <!-- Main Content -->
       <main class="flex-1 p-6 bg-base-200 dark:bg-backgroundDark">
-        <StatsCards />
-        <Charts />
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <RecentOrders class="lg:col-span-2" />
-          <RecentActivity />
-        </div>
-        <StackedBarChart class="mt-6" />
+        <component :is="currentComponent" />
       </main>
     </div>
 
     <!-- Sidebar -->
-    <Sidebar />
+    <Sidebar @select="(name) => (currentView = name)" />
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect, computed } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Sidebar from "./components/Sidebar.vue";
 import StatsCards from "./components/StatsCards.vue";
@@ -36,7 +29,29 @@ import Charts from "./components/Charts.vue";
 import RecentOrders from "./components/RecentOrders.vue";
 import RecentActivity from "./components/RecentActivity.vue";
 import StackedBarChart from "./components/StackedBarChart.vue";
+import Dashboard from "./components/Dashboard.vue";
+import Analytics from "./components/Analytics.vue";
+import Reports from "./components/Reports.vue";
+import Users from "./components/Users.vue";
+import Products from "./components/Products.vue";
+import Messages from "./components/Messages.vue";
+import Settings from "./components/Settings.vue";
 const isDark = ref(true);
+const currentView = ref("Dashboard");
+
+const componentsMap = {
+  Dashboard,
+  Analytics,
+  Reports,
+  Users,
+  Products,
+  Messages,
+  Settings,
+};
+
+const currentComponent = computed(() => {
+  return componentsMap[currentView.value] || componentsMap.Dashboard;
+});
 
 onMounted(() => {
   const savedTheme = localStorage.getItem("theme");

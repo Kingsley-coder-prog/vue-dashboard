@@ -42,14 +42,23 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+const API = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
-const recentActivities = ref([
-  { type: "User login", time: "10:30AM", icon: "check" },
-  { type: "New Order", time: "10:30AM", icon: "check" },
-  { type: "System update", time: "10:30AM", icon: "check" },
-  { type: "User login", time: "10:30AM", icon: "check" },
-  { type: "User login", time: "10:30AM", icon: "check" },
-]);
+const recentActivities = ref([]);
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`${API}/api/recent-activity`);
+    if (!res.ok) return;
+    const rows = await res.json();
+    recentActivities.value = rows.map((r) => ({
+      type: r.description || r.type || "Activity",
+      time: r.created_at ? new Date(r.created_at).toLocaleString() : "",
+    }));
+  } catch (err) {
+    console.error("Failed to load recent activity", err);
+  }
+});
 </script>
 
